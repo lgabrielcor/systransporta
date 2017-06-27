@@ -17,7 +17,8 @@ namespace sysTransporta.Controllers
         // GET: Companies
         public ActionResult Index()
         {
-            return View(db.Companies.ToList());
+            var companies = db.Companies.Include(c => c.plan);
+            return View(companies.ToList());
         }
 
         // GET: Companies/Details/5
@@ -27,26 +28,27 @@ namespace sysTransporta.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = db.Companies.Find(id);
+            Company company = db.Companies.Include(c => c.plan).FirstOrDefault(x => x.Id == id);
             if (company == null)
             {
                 return HttpNotFound();
             }
-            return View(company);
+            return PartialView(company);
         }
 
         // GET: Companies/Create
         public ActionResult Create()
         {
-            return View();
+            ViewBag.PlanId = new SelectList(db.Plans.Where(x => x.enable), "Id", "Name");
+            return PartialView();
         }
 
         // POST: Companies/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
+        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,LegalName,Nit,ResolucionNumber,QualificationYear,Street,Phone1,Phone2,EMail,ContactName,Manager,VehicleCant,Plan,LastContractNumber")] Company company)
+        public ActionResult CreateNew([Bind(Include = "Id,LegalName,Nit,ResolucionNumber,QualificationYear,Street,Phone1,Phone2,EMail,ContactName,Manager,VehicleCant,PlanId,LastContractNumber")] Company company)
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +57,8 @@ namespace sysTransporta.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(company);
+            ViewBag.PlanId = new SelectList(db.Plans.Where(x => x.enable), "Id", "Name", company.PlanId);
+            return PartialView(company);
         }
 
         // GET: Companies/Edit/5
@@ -70,15 +73,16 @@ namespace sysTransporta.Controllers
             {
                 return HttpNotFound();
             }
-            return View(company);
+            ViewBag.PlanId = new SelectList(db.Plans.Where(x => x.enable), "Id", "Name", company.PlanId);
+            return PartialView(company);
         }
 
         // POST: Companies/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
+        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,LegalName,Nit,ResolucionNumber,QualificationYear,Street,Phone1,Phone2,EMail,ContactName,Manager,VehicleCant,Plan,LastContractNumber")] Company company)
+        public ActionResult EditItem([Bind(Include = "Id,LegalName,Nit,ResolucionNumber,QualificationYear,Street,Phone1,Phone2,EMail,ContactName,Manager,VehicleCant,PlanId,LastContractNumber")] Company company)
         {
             if (ModelState.IsValid)
             {
@@ -86,11 +90,12 @@ namespace sysTransporta.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(company);
+            ViewBag.PlanId = new SelectList(db.Plans.Where(x => x.enable), "Id", "Name", company.PlanId);
+            return PartialView(company);
         }
 
         // GET: Companies/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult DeleteItem(int? id)
         {
             if (id == null)
             {
@@ -101,16 +106,17 @@ namespace sysTransporta.Controllers
             {
                 return HttpNotFound();
             }
-            return View(company);
+            return PartialView("Delete", company);
         }
 
         // POST: Companies/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Company company = db.Companies.Find(id);
-            db.Companies.Remove(company);
+            company.enable = false;
+            db.Entry(company).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
