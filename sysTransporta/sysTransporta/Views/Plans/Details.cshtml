@@ -1,0 +1,54 @@
+﻿@model sysTransporta.Models.Plan
+
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <dl class="dl-horizontal">
+        <dt>
+            @using (Ajax.BeginForm("Edit", "Plans", new { id = Model.Id }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dvcontent" }))
+            {
+                <input type="submit" value="Editar" class="btn btn-primary btn-sm" id="btnEditar" width="200" />
+            }
+        </dt>
+        <dd>
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @using (Ajax.BeginForm("DeleteItem", "Plans", new { id = Model.Id }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dvcontent" }))
+            {
+                <input type="submit" value="Inactivar" class="btn btn-primary btn-sm" id="btnInactivar" width="200" />
+            }
+        </dt>
+        <dd>
+        </dd>
+    </dl>
+</p>
