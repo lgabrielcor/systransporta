@@ -18,5 +18,8 @@ namespace sysTransporta.Models
         public System.Data.Entity.DbSet<sysTransporta.Models.Driver> Drivers { get; set; }
 
         public System.Data.Entity.DbSet<sysTransporta.Models.Plan> Plans { get; set; }
+        public System.Data.Entity.DbSet<sysTransporta.Models.DocumentType> DocumentTypes { get; set; }
+        public System.Data.Entity.DbSet<sysTransporta.Models.LicenseType> LicenseTypes { get; set; }
+        public System.Data.Entity.DbSet<sysTransporta.Models.Country> Countries { get; set; }
     }
 }

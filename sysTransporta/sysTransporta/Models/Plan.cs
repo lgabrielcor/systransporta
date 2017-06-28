@@ -25,8 +25,9 @@ namespace sysTransporta.Models
         public string Description { get; set; }
         [DisplayName("Precio")]
         [Required(ErrorMessage = "Precio es obligatorio")]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo es numérico sin puntos decimales")]
         [Range(0, 100000, ErrorMessage = "El precio debe estar entre los $0 y $100.000 pesos")]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public bool enable { get; set; }
 
 
