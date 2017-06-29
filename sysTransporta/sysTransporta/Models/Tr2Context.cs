@@ -21,5 +21,8 @@ namespace sysTransporta.Models
         public System.Data.Entity.DbSet<sysTransporta.Models.DocumentType> DocumentTypes { get; set; }
         public System.Data.Entity.DbSet<sysTransporta.Models.LicenseType> LicenseTypes { get; set; }
         public System.Data.Entity.DbSet<sysTransporta.Models.Country> Countries { get; set; }
+        public System.Data.Entity.DbSet<sysTransporta.Models.VehicleFeature> VehicleFeatures { get; set; }
+        public System.Data.Entity.DbSet<sysTransporta.Models.VehicleType> VehicleTypes { get; set; }
+        public System.Data.Entity.DbSet<sysTransporta.Models.Document> Documents { get; set; }
     }
 }
